@@ -44,11 +44,18 @@ async function getMonitorData(){
             let url = request.url();
             if(url.indexOf("MK_ReportModule/ReportManage/GetReportData") > -1){
                 //得到请求日期
+                let paramListObj = getParam(url);
+                if(paramListObj == null){
+                    console.log("抓取到的参数为null");
+                    return;
+                }
                 let reportresult = await response.json();
-                console.log(url);
+                let resultItem = reportresult["listData"][0];
+                resultItem["SearchDate"] = JSON.parse(paramListObj["queryJson"])["SearchDate"];
+                //调用函数上川岛微信小程序云开发
+                upMonitorData(resultItem);
             }
         });
-
     }catch (e){
         console.error("执行异常:"+e.toString())
     }
@@ -72,10 +79,10 @@ function sleep(numberMillis) {
 
 
 /**
- * 加载今天上报日志上传到小程序云端 提供给小程序端监控上传结果
+ * 提供给小程序端监控上传结果
  * v1.2.0
  */
-async function upMonitorData(){
+async function upMonitorData(dataArray){
     //云环境ID
     let env = 'tgw-4gsif7kwf1ee3093';
     //云函数名称
@@ -84,31 +91,6 @@ async function upMonitorData(){
        const accessToken = await getWxAccessToken();
 
        let postUrl = `https://api.weixin.qq.com/tcb/databaseadd?access_token=${accessToken}`;
-       let dataArray = [
-                {
-                    '确认情况': '',
-                    '省份': '广东',
-                    '编码': '44090',
-                    '血站名称': '茂名市中心血站',
-                    '一般检测': 168,
-                    '筛查总数': 165,
-                    '采集总人次': 108,
-                    '全血人次': 106,
-                    '血小板人次': 2,
-                    '采集总量': 197,
-                    '全血总量': 194,
-                    '血小板总量': 3,
-                    '检测总数': 6,
-                    '供血总量': 238,
-                    '供红细胞量': 58,
-                    '供血小板量': 10,
-                    '调剂总量': 0,
-                    '报废总量': 3,
-                    '库存总量': 0,
-                    '红细胞存量': 0,
-                    '血小板存量': 0
-                }
-            ];
        let postData = {
            "env": env,
            "query": `db.collection(\"dataupmonitor\").add({data : ${JSON.stringify(dataArray)}})`
@@ -135,12 +117,12 @@ async function upMonitorData(){
    }
 }
 
-
 //upMonitorData();
 /**
- *
+ *参数解析得到参数对象
  */
 function getParam(url){
+    url = unescape(url);
     if(!url){
         return null;
     }
@@ -148,6 +130,16 @@ function getParam(url){
     if(url.indexOf("?") < 0){
         return null;
     }
-    let paramStr = url.substr(url.indexOf("?"));
-    console.log(paramStr);
+    let paramStr = url.substr(url.indexOf("?") + 1);
+    //得到参数键值对列表
+    let paramAaary = paramStr.split("&");
+    if(paramAaary.length === 0){
+        return null;
+    }
+    let paramObj = {};
+    for (let i in paramAaary){
+        let paramItem = paramAaary[i].split("=");
+        paramObj[paramItem[0]] = paramItem[1];
+    }
+    return paramObj;
 }
