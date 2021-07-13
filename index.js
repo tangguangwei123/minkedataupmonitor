@@ -5,12 +5,99 @@ const {getWxAccessToken} = require("./wxaccesstoken/getWxAccessToken");
 //定义用户名密码对象数组
 let users = [{
     username: "44090",
-    password: "cs707196"
+    password: "cs707196",
+    org: "茂名市中心血站",
+    active: true,
+},{
+    username: "14030",
+    password: "xn662456",
+    org: "阳泉市中心血站",
+    active: true,
+},{
+    username: "35020",
+    password: "kx718627",
+    org: "厦门市中心血站",
+    active: true,
+},{
+    username: "23010",
+    password: "ic351136",
+    org: "黑龙江省血液中心",
+    active: true,
+},{
+    username: "23050",
+    password: "eq905284",
+    org: "双鸭山市中心血站",
+    active: true,
+},{
+    username: "23051",
+    password: "ik986243",
+    org: "宝清县中心血库",
+    active: true,
+},{
+    username: "23052",
+    password: "dx732729",
+    org: "饶河县中心血库",
+    active: true,
+},{
+    username: "23070",
+    password: "yc572969",
+    org: "伊春市中心血站",
+    active: true,
+},{
+    username: "23081",
+    password: "fo168332",
+    org: "同江市中心血库",
+    active: true,
+},{
+    username: "23082",
+    password: "sp590999",
+    org: "富锦市中心血库",
+    active: true,
+},{
+    username: "23083",
+    password: "nx482065",
+    org: "抚远县中心血库",
+    active: true,
+},{
+    username: "23083",
+    password: "nx482065",
+    org: "抚远县中心血库",
+    active: true,
+},{
+    username: "23090",
+    password: "rf396220",
+    org: "七台河市中心血站",
+    active: true,
+},{
+    username: "23120",
+    password: "fi216799",
+    org: "绥化市中心血站",
+    active: true,
+},{
+    username: "23120",
+    password: "fi216799",
+    org: "绥化市中心血站",
+    active: true,
 }];
 
-async function getMonitorData(){
+main()
+/**
+ * 入口函数
+ */
+async function main(){
+    //遍历所有需要监测的用户列表
+    for (let i in users){
+        if(users[i].active){
+            await getMonitorData(users[i]);
+            //等待10s
+            sleep(20000);
+        }
+    }
+}
+
+async function getMonitorData(user){
     try {
-        const browser = await puppeteer.launch({headless: false, defaultViewport: {width: 1280, height: 8000}});
+        const browser = await puppeteer.launch({headless: true, defaultViewport: {width: 1280, height: 8000}});
         const page = await browser.newPage();
         await page.goto('http://10.0.8.2/');
         //查找用户名输入框位置
@@ -19,21 +106,21 @@ async function getMonitorData(){
         //点击用户名输入框
         await page.mouse.click(usernameInputElementPosition.x + 10, usernameInputElementPosition.y + 5);
         //输入密码
-        await page.keyboard.sendCharacter(users[0].username);
+        await page.keyboard.sendCharacter(user.username);
         //查找密码输入框位置
         let passwordElement = await page.$("#mk_password");
         let passwordElementPosition = await passwordElement.boundingBox();
         //点击用户名输入框
         await page.mouse.click(passwordElementPosition.x + 10, passwordElementPosition.y + 5);
         //输入密码
-        await page.keyboard.sendCharacter(users[0].password);
+        await page.keyboard.sendCharacter(user.password);
         //查找登录按钮位置
         let loginButton = await page.$("#mk_login_btn");
         let loginButtonPosition = await loginButton.boundingBox();
         //点击登录
         let loginResult = await page.mouse.click(loginButtonPosition.x + 10, loginButtonPosition.y + 5, {delay: 1000});
         //等待10秒，等待登录后渲染结束
-        sleep(10);
+        sleep(10000);
         /**
          * 查找各项报销统计
          */
@@ -46,14 +133,16 @@ async function getMonitorData(){
                 //得到请求日期
                 let paramListObj = getParam(url);
                 if(paramListObj == null){
-                    console.log("抓取到的参数为null");
                     return;
                 }
                 let reportresult = await response.json();
                 let resultItem = reportresult["listData"][0];
                 resultItem["SearchDate"] = JSON.parse(paramListObj["queryJson"])["SearchDate"];
                 //调用函数上川岛微信小程序云开发
-                upMonitorData(resultItem);
+                await upMonitorData(resultItem);
+                console.log(`${user.org}上传云数据库完毕!`);
+                // 像处理任何其他页面一样测试背景页面。
+                await browser.close();
             }
         });
     }catch (e){
@@ -61,10 +150,9 @@ async function getMonitorData(){
     }
 };
 
-getMonitorData();
-
 /**
  * 停留几秒
+ * 单位：毫秒
  * @param numberMillis
  */
 function sleep(numberMillis) {
@@ -76,8 +164,6 @@ function sleep(numberMillis) {
             return;
     }
 }
-
-
 /**
  * 提供给小程序端监控上传结果
  * v1.2.0

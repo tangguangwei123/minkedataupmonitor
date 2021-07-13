@@ -6,11 +6,26 @@
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
       </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de138ef0-49e6-4c6a-b062-d05cb4680bea" name="Default Changelist" comment="初次提交">
+      <change afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
@@ -39,7 +54,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../bldreimreact" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -52,6 +67,8 @@
       <updated>1626049216599</updated>
       <workItem from="1626049217699" duration="10831000" />
       <workItem from="1626070059292" duration="6955000" />
+      <workItem from="1626083509421" duration="302000" />
+      <workItem from="1626133595958" duration="7519000" />
     </task>
     <task id="LOCAL-00001" summary="初次提交">
       <created>1626070239042</created>
@@ -76,23 +93,24 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="初次提交" />
     <option name="LAST_COMMIT_MESSAGE" value="初次提交" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="420" y="246" key="FileChooserDialogImpl" timestamp="1626054325231">
+    <state x="420" y="246" key="FileChooserDialogImpl" timestamp="1626144447118">
       <screen x="0" y="0" width="1280" height="984" />
     </state>
-    <state x="420" y="246" key="FileChooserDialogImpl/0.0.1280.984@0.0.1280.984" timestamp="1626054325231" />
+    <state x="420" y="246" key="FileChooserDialogImpl/0.0.1280.984@0.0.1280.984" timestamp="1626144447118" />
     <state x="393" y="193" key="RollbackChangesDialog" timestamp="1626070212131">
       <screen x="0" y="0" width="1280" height="984" />
     </state>
     <state x="393" y="193" key="RollbackChangesDialog/0.0.1280.984@0.0.1280.984" timestamp="1626070212131" />
-    <state x="232" y="224" key="Vcs.Push.Dialog.v2" timestamp="1626072087162">
+    <state x="232" y="224" key="Vcs.Push.Dialog.v2" timestamp="1626083956972">
       <screen x="0" y="0" width="1280" height="984" />
     </state>
-    <state x="232" y="224" key="Vcs.Push.Dialog.v2/0.0.1280.984@0.0.1280.984" timestamp="1626072087162" />
+    <state x="232" y="224" key="Vcs.Push.Dialog.v2/0.0.1280.984@0.0.1280.984" timestamp="1626083956972" />
   </component>
 </project>
