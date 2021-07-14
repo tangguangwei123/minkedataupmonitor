@@ -1,3 +1,4 @@
+var moment = require("moment");
 
 function sleep(numberMillis) {
     var now = new Date();
@@ -9,6 +10,4 @@ function sleep(numberMillis) {
     }
 }
 
-console.log("开始")
-sleep(10000);
-console.log("结束")
+console.log(moment().format("YYYY-MM-DD"))

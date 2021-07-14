@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "log4js": "^6.3.0",
+    "moment": "^2.29.1",
     "puppeteer": "^10.1.0",
     "request": "^2.88.2"
   }

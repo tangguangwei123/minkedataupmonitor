@@ -24,12 +24,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de138ef0-49e6-4c6a-b062-d05cb4680bea" name="Default Changelist" comment="初次提交">
-      <change afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
+    <list default="true" id="de138ef0-49e6-4c6a-b062-d05cb4680bea" name="Default Changelist" comment="第一版本开发完成">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wxaccesstoken/accesstoken.txt" beforeDir="false" afterPath="$PROJECT_DIR$/wxaccesstoken/accesstoken.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +68,8 @@
       <workItem from="1626049217699" duration="10831000" />
       <workItem from="1626070059292" duration="6955000" />
       <workItem from="1626083509421" duration="302000" />
-      <workItem from="1626133595958" duration="7519000" />
+      <workItem from="1626133595958" duration="7847000" />
+      <workItem from="1626220274732" duration="20386000" />
     </task>
     <task id="LOCAL-00001" summary="初次提交">
       <created>1626070239042</created>
@@ -77,7 +78,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626070239043</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="第一版本开发完成">
+      <created>1626169776921</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1626169776921</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -97,7 +105,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="初次提交" />
-    <option name="LAST_COMMIT_MESSAGE" value="初次提交" />
+    <MESSAGE value="第一版本开发完成" />
+    <option name="LAST_COMMIT_MESSAGE" value="第一版本开发完成" />
   </component>
   <component name="WindowStateProjectService">
     <state x="420" y="246" key="FileChooserDialogImpl" timestamp="1626144447118">
@@ -108,9 +117,9 @@
       <screen x="0" y="0" width="1280" height="984" />
     </state>
     <state x="393" y="193" key="RollbackChangesDialog/0.0.1280.984@0.0.1280.984" timestamp="1626070212131" />
-    <state x="232" y="224" key="Vcs.Push.Dialog.v2" timestamp="1626083956972">
+    <state x="232" y="224" key="Vcs.Push.Dialog.v2" timestamp="1626169785369">
       <screen x="0" y="0" width="1280" height="984" />
     </state>
-    <state x="232" y="224" key="Vcs.Push.Dialog.v2/0.0.1280.984@0.0.1280.984" timestamp="1626083956972" />
+    <state x="232" y="224" key="Vcs.Push.Dialog.v2/0.0.1280.984@0.0.1280.984" timestamp="1626169785369" />
   </component>
 </project>

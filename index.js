@@ -1,6 +1,10 @@
 const puppeteer = require('puppeteer');
 const request = require("request");
+const fs = require("fs");
+var moment = require("moment");
 const {getWxAccessToken} = require("./wxaccesstoken/getWxAccessToken");
+var logs = require("./logs/loggerFile");
+var loggerFile = logs.loggerFile;
 
 //定义用户名密码对象数组
 let users = [{
@@ -59,19 +63,9 @@ let users = [{
     org: "抚远县中心血库",
     active: true,
 },{
-    username: "23083",
-    password: "nx482065",
-    org: "抚远县中心血库",
-    active: true,
-},{
     username: "23090",
     password: "rf396220",
     org: "七台河市中心血站",
-    active: true,
-},{
-    username: "23120",
-    password: "fi216799",
-    org: "绥化市中心血站",
     active: true,
 },{
     username: "23120",
@@ -85,6 +79,7 @@ main()
  * 入口函数
  */
 async function main(){
+    loggerFile.info("开始执行任务！");
     //遍历所有需要监测的用户列表
     for (let i in users){
         if(users[i].active){
@@ -93,13 +88,42 @@ async function main(){
             sleep(20000);
         }
     }
+    loggerFile.info("任务结束！");
 }
 
 async function getMonitorData(user){
     try {
-        const browser = await puppeteer.launch({headless: true, defaultViewport: {width: 1280, height: 8000}});
+        loggerFile.info(`开始查询:${user.org}上报数据！`);
+        const browser = await puppeteer.launch({headless: true,  args: ['--disable-features=site-per-process'], defaultViewport: {width: 1280, height: 8000}});
         const page = await browser.newPage();
         await page.goto('http://10.0.8.2/');
+        /**
+         * 监听response
+         * 查找各项报销统计
+         */
+        await page.on('response',async response => {
+            let request = response.request();
+            let resourceType = request.resourceType();
+            //得到请求地址
+            let url = request.url();
+            if(url.indexOf("MK_ReportModule/ReportManage/GetReportData") > -1){
+                //得到请求日期
+                let paramListObj = getParam(url);
+                if(paramListObj == null){
+                    return;
+                }
+                let reportresult = await response.json();
+                let resultItem = reportresult["listData"][0];
+                resultItem["SearchDate"] = JSON.parse(paramListObj["queryJson"])["SearchDate"];
+                //调用函数上川岛微信小程序云开发
+                await upMonitorData(resultItem);
+                loggerFile.info(`${user.org}上传云数据库完毕!`);
+                if(JSON.parse(paramListObj["queryJson"])["SearchDate"] === moment().format("YYYY-MM-DD")){
+                    loggerFile.info(`${user.org} 查询完毕,关闭浏览器!`);
+                    await browser.close();
+                }
+            }
+        });
         //查找用户名输入框位置
         let usernameInputElement = await page.$("#mk_username");
         let usernameInputElementPosition = await usernameInputElement.boundingBox();
@@ -119,34 +143,30 @@ async function getMonitorData(user){
         let loginButtonPosition = await loginButton.boundingBox();
         //点击登录
         let loginResult = await page.mouse.click(loginButtonPosition.x + 10, loginButtonPosition.y + 5, {delay: 1000});
-        //等待10秒，等待登录后渲染结束
-        sleep(10000);
-        /**
-         * 查找各项报销统计
-         */
-        page.on('response',async response => {
-            let request = response.request();
-            let resourceType = request.resourceType();
-            //得到请求地址
-            let url = request.url();
-            if(url.indexOf("MK_ReportModule/ReportManage/GetReportData") > -1){
-                //得到请求日期
-                let paramListObj = getParam(url);
-                if(paramListObj == null){
-                    return;
-                }
-                let reportresult = await response.json();
-                let resultItem = reportresult["listData"][0];
-                resultItem["SearchDate"] = JSON.parse(paramListObj["queryJson"])["SearchDate"];
-                //调用函数上川岛微信小程序云开发
-                await upMonitorData(resultItem);
-                console.log(`${user.org}上传云数据库完毕!`);
-                // 像处理任何其他页面一样测试背景页面。
-                await browser.close();
-            }
-        });
+        //页面登录成功后，需要保证redirect 跳转到请求的页面
+        loggerFile.info(`${user.org} 开始查询今天数据!`);
+        await page.waitForNavigation();
+        await page.waitFor(10000);
+        const frame = page.frames().find(frame => frame.url().indexOf("/Home/AdminDesktop") > -1);
+        //点击用户名输入框
+        await frame.click("#btn_Search_Time");
+        //输入今天日期字符串
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.press('Backspace');
+        await page.keyboard.sendCharacter(moment().format("YYYY-MM-DD"));
+        //点击【查找】按钮
+        await frame.click("#mk_search");
+        return;
     }catch (e){
-        console.error("执行异常:"+e.toString())
+        loggerFile.error(`${user.org}执行异常:`+e.toString());
     }
 };
 
@@ -193,13 +213,13 @@ async function upMonitorData(dataArray){
            //post参数字符串
        }, function(error, response, body) {
            if(error){
-               console.error(error);
+               loggerFile.error(error);
                return;
            }
-           console.info(body);
+           loggerFile.info(body);
        });
    }catch (e) {
-        console.error(e);
+        loggerFile.error(e);
    }
 }
 
